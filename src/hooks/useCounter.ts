@@ -1,20 +1,28 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-const MAXIMUN_COUNT= 10;
-export const useCounter = () =>{
+interface Types{
+    maxCount:number;
+}
+
+export const useCounter = ({maxCount = 10}:Types) =>{
     const[counter,setCounter] = React.useState(5)
     const counterElement = useRef<HTMLHeadingElement>(null)
+    const tl = useRef(gsap.timeline());
     
     const increcment = () =>{
-        setCounter(prev => Math.min(prev + 1,MAXIMUN_COUNT))
+        setCounter(prev => Math.min(prev + 1,maxCount))
     }
- 
+
+
+    useLayoutEffect(() =>{
+        if( !counterElement.current) return
+            tl.current.to(counterElement.current,{y:-10,duration:0.3,ease:'elastic.out'})
+            tl.current.to(counterElement.current,{y:0,duration:1,ease:'bounce.out'})
+            tl.current.pause();
+    },[])
     useEffect(() =>{
-        if( counter < MAXIMUN_COUNT) return
-        const tl = gsap.timeline()
-        tl.to(counterElement.current,{y:-10,duration:0.3,ease:'elastic.out'})
-        tl.to(counterElement.current,{y:0,duration:1,ease:'bounce.out'})
+        tl.current.play(0);
     },[counter])
 
     return{

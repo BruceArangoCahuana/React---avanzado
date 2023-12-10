@@ -5,7 +5,9 @@ interface Props{
     initialValues?:number
 }
 function CounterEffectHook({initialValues=0}:Props){
-    const {counter,counterElement,increcment} = useCounter()
+    const {counter,counterElement,increcment} = useCounter({
+        maxCount:15
+    })
     return(
         <>
             <h1>Counter Hook:</h1>
