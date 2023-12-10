@@ -21,6 +21,7 @@ export const useCounter = ({maxCount = 10}:Types) =>{
             tl.current.to(counterElement.current,{y:0,duration:1,ease:'bounce.out'})
             tl.current.pause();
     },[])
+    //cada useEffect tiene responsabilidad unica
     useEffect(() =>{
         tl.current.play(0);
     },[counter])
